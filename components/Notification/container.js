@@ -13,7 +13,12 @@ class Container extends Component {
 		followUser: PropTypes.func.isRequired,
 		unfollowUser: PropTypes.func.isRequired,
 	};
+
+	static defaultProps = {
+		notifications: [],
+	};
 	render() {
+		// console.log(this.props);
 		return <Notification handleFollowPress={this._handleFollowPress} {...this.props} {...this.state} />;
 	}
 
@@ -24,12 +29,12 @@ class Container extends Component {
 		if (isFollowing) {
 			unfollowUser();
 			this.setState({
-				isFollwing: false,
+				isFollowing: false,
 			});
 		} else {
 			followUser();
 			this.setState({
-				isFollwing: true,
+				isFollowing: true,
 			});
 		}
 	};

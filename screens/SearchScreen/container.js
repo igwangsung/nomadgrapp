@@ -16,6 +16,10 @@ class Container extends Component {
 		search: PropTypes.array,
 	};
 
+	static defaultProps = {
+		search: [],
+	};
+
 	state = {
 		searchingBy: '',
 		isFetching: false,

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { View, Text, ScrollView, RefreshControl, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import ProfileNumber from '../ProfileNumber';
 import { Ionicons } from '@expo/vector-icons';
+import SquarePhoto from '../SquarePhoto';
+import Photo from '../Photo';
 const { width, height } = Dimensions.get('window');
 
 const Profile = props => (
@@ -19,7 +21,7 @@ const Profile = props => (
 		>
 			<View style={styles.profile}>
 				<View style={styles.header}>
-					<TouchableOpacity>
+					<TouchableOpacity onPressOut={props.showAS}>
 						<Image
 							source={
 								props.profileObject.profile_image
@@ -62,7 +64,7 @@ const Profile = props => (
 						) : (
 							<TouchableOpacity>
 								<View style={[styles.button, { backgroundColor: '#3e99ee' }]}>
-									<Text style={[styles.text, { color: 'black' }]}>
+									<Text style={[styles.text, { color: 'white' }]}>
 										{props.profileObject.following ? 'Unfollow' : 'Follow'}
 									</Text>
 								</View>
@@ -94,6 +96,16 @@ const Profile = props => (
 					</TouchableOpacity>
 				</View>
 			</View>
+
+			{props.mode === 'grid' && (
+				<View style={styles.photoContainer}>
+					{props.profileObject.images &&
+						props.profileObject.images.map(photo => <SquarePhoto key={photo.id} imageURL={photo.file} />)}
+				</View>
+			)}
+			{props.mode === 'list' &&
+				props.profileObject.images &&
+				props.profileObject.images.map(photo => <Photo key={photo.id} {...photo} />)}
 		</ScrollView>
 	</View>
 );
@@ -150,6 +162,7 @@ const styles = StyleSheet.create({
 	},
 	photoContainer: {
 		flexDirection: 'row',
+		flexWrap: 'wrap',
 	},
 	button: {
 		borderRadius: 3,
@@ -171,8 +184,8 @@ Profile.propTypes = {
 		bio: PropTypes.string,
 		followers_count: PropTypes.number,
 		following_count: PropTypes.number,
-		following: PropTypes.bool.isRequired,
-		is_self: PropTypes.bool.isRequired,
+		following: PropTypes.bool,
+		is_self: PropTypes.bool,
 		images: PropTypes.arrayOf(
 			PropTypes.shape({
 				id: PropTypes.number.isRequired,
@@ -208,6 +221,7 @@ Profile.propTypes = {
 	changeToList: PropTypes.func.isRequired,
 	changeToGrid: PropTypes.func.isRequired,
 	mode: PropTypes.oneOf(['grid', 'list']),
+	showAS: PropTypes.func.isRequired,
 };
 
 export default Profile;

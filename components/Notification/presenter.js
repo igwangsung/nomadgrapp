@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { View, Text, Image, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
 import FadeIn from 'react-native-fade-in-image';
 import { withNavigation } from 'react-navigation';
+import { API_URL } from '../../constants';
 const { width, height } = Dimensions.get('window');
 const Notification = props => (
 	<View style={styles.container}>
 		<TouchableOpacity
-			onPress={() =>
+			onPressOut={() =>
 				props.navigation.navigate('ProfileDetail', {
 					user: props.creator,
 				})
@@ -16,9 +17,9 @@ const Notification = props => (
 			<FadeIn>
 				<Image
 					source={
-						props.creator.profile_image
+						`${API_URL}` + props.creator.profile_image
 							? {
-									uri: props.creator.profile_image,
+									uri: `${API_URL}` + props.creator.profile_image,
 							  }
 							: require('../../assets/images/noPhoto.jpg')
 					}
@@ -40,11 +41,20 @@ const Notification = props => (
 				</View>
 			</TouchableOpacity>
 		) : (
-			<Image
-				source={{ uri: props.image.file }}
-				style={styles.payload}
-				defaultSource={require('../../assets/images/photoPlaceholder.png')}
-			/>
+			<TouchableOpacity
+				onPressOut={() => {
+					props.navigation.navigate('Photo'),
+						{
+							image: props.creator.images,
+						};
+				}}
+			>
+				<Image
+					source={{ uri: props.image.file }}
+					style={styles.payload}
+					defaultSource={require('../../assets/images/photoPlaceholder.png')}
+				/>
+			</TouchableOpacity>
 		)}
 	</View>
 );
@@ -113,8 +123,8 @@ Notification.propTypes = {
 	notification_type: PropTypes.oneOf(['like', 'comment', 'follow']).isRequired,
 	to: PropTypes.number.isRequired,
 	updated_at: PropTypes.string.isRequired,
-	handleFollowPress: PropTypes.func.isRequired,
 	isFollowing: PropTypes.bool.isRequired,
+	handleFollowPress: PropTypes.func.isRequired,
 };
 
 export default withNavigation(Notification);

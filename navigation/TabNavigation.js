@@ -5,7 +5,7 @@ import HomeRoute from '../routes/HomeRoute';
 import SearchRoute from '../routes/SearchRoute';
 import NotificationRoute from '../routes/NotificationRoute';
 import ProfileRoute from '../routes/ProfileRoute';
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 //2개의 오브젝트가 필요함.
 const TabNavigation = createBottomTabNavigator(
